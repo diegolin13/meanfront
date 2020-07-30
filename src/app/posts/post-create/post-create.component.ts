@@ -33,10 +33,11 @@ export class PostCreateComponent implements OnInit {
             this.isLoading = true;
             this.postService.getOnePost(this.postId).subscribe((postData: any) => {
               this.isLoading = false;
-              this.post = {id: postData.post._id, title: postData.post.title, content: postData.post.content};
+              this.post = {id: postData.post._id, title: postData.post.title, content: postData.post.content, imagePath: postData.post.imagePath};
               this.form.setValue({
                 title: postData.post.title,
-                content: postData.post.content
+                content: postData.post.content,
+                image: postData.post.imagePath,
               });
             });
         } else {
@@ -46,15 +47,15 @@ export class PostCreateComponent implements OnInit {
     });
   }
   onSavePost(): void{
-    if (this.form.invalid){
+   if (this.form.invalid){
       return;
     }
     this.isLoading = true;
     if (this.mode === 'create') {
-      this.postService.addPost(this.form.value.title, this.form.value.content );
+      this.postService.addPost(this.form.value.title, this.form.value.content, this.form.value.image );
     }
     else {
-      this.postService.updatePost(this.postId, this.form.value.title, this.form.value.content );
+      this.postService.updatePost(this.postId, this.form.value.title, this.form.value.content, this.form.value.image );
     }
     this.form.reset();
   }
