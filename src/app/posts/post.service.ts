@@ -23,8 +23,9 @@ export class PostService {
           title: post.title,
           content: post.content,
           id: post._id,
-          imagePath: post.imagePath
-        }
+          imagePath: post.imagePath,
+          creator: post.creator
+        };
       });
     }))
     .subscribe((postsTransformed) => {
@@ -44,16 +45,13 @@ export class PostService {
     postData.append('content', content);
     postData.append('image', image, title);
     this.http.post<{message: string, post: Post}>(`${this.url}/posts`, postData).subscribe((resp) => {
-        const  post: Post = {id: resp.post.id, title: title, content: content, imagePath: resp.post.imagePath};
-        this.posts.push(post);
-        this.postUpdated.next([...this.posts]);
         this.router.navigate(['/']);
     });
 
   }
 
   getOnePost(id: string) {
-    return this.http.get<{_id: string, title: string, content: string, imagePath: string}>(`${this.url}/posts/${id}`);
+    return this.http.get<{_id: string, title: string, content: string, imagePath: string, creator: string}>(`${this.url}/posts/${id}`);
   }
 
   updatePost(id: string, title: string, content: string, image: File | string) {
@@ -67,25 +65,15 @@ export class PostService {
 
     } else {
         postData = {
-        id: id,
-        title: title,
-        content: content,
-        imagePath: image
+        id,
+        title,
+        content,
+        imagePath: image,
+        creator: null
       }
     }
     this.http.put(`${this.url}/posts/${id}`, postData)
     .subscribe(response => {
-      const updatedPosts = [...this.posts];
-      const oldPostIndex = updatedPosts.findIndex(p => p.id === id);
-      const post: Post = {
-        id: id,
-        title: title,
-        content: content,
-        imagePath: ''
-      }
-      updatedPosts[oldPostIndex] = post;
-      this.posts = updatedPosts;
-      this.postUpdated.next([...this.posts]);
       this.router.navigate(['/']);
     });
   }

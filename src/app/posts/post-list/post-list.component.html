@@ -6,9 +6,9 @@
             <img [src]="post.imagePath" [alt]="post.title">
         </div>
         <p>{{post.content}}</p>
-        <mat-action-row>
-            <button mat-icon-button color="primary" *ngIf="isAuthenticated" [routerLink]="['/edit', post.id]"><mat-icon><mat-icon>create</mat-icon></mat-icon></button>
-            <button mat-icon-button color="warn" *ngIf="isAuthenticated" (click)="delete(post.id)"><mat-icon><mat-icon>delete</mat-icon></mat-icon></button>
+        <mat-action-row *ngIf="isAuthenticated && userId == post.creator">
+            <button mat-icon-button color="primary" [routerLink]="['/edit', post.id]"><mat-icon><mat-icon>create</mat-icon></mat-icon></button>
+            <button mat-icon-button color="warn" (click)="delete(post.id)"><mat-icon><mat-icon>delete</mat-icon></mat-icon></button>
         </mat-action-row>
     </mat-expansion-panel>
 </mat-accordion>
