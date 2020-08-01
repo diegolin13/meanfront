@@ -3,9 +3,10 @@
     <span class="example-spacer"></span>
     <span>
       <ul>
-        <li> <a mat-button routerLink="/create">Create Post</a></li>
-        <li> <a mat-button routerLink="/login">Login</a></li>
-        <li> <a mat-button routerLink="/signup">SignUp</a></li>
+        <li> <a mat-button routerLink="/create" *ngIf="isAuthenticated">Create Post</a></li>
+        <li> <a mat-button routerLink="/login" *ngIf="!isAuthenticated">Login</a></li>
+        <li> <a mat-button routerLink="/signup" *ngIf="!isAuthenticated">SignUp</a></li>
+        <li> <button mat-button *ngIf="isAuthenticated"> Logout </button> </li>
       </ul>
     </span>
 </mat-toolbar>
