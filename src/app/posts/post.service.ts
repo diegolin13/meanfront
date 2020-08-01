@@ -4,7 +4,6 @@ import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import { Router } from '@angular/router';
-import {Form} from "@angular/forms";
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +14,10 @@ export class PostService {
   constructor(private http: HttpClient, private router: Router) { }
   url = 'http://localhost:3000/api';
 
-  getPosts() {
-    // return [...this.posts];
-    this.http.get<{message: string, posts: any}>(`${this.url}/posts`)
-    .pipe(map((postData)=> {
+  getPosts(postPerPAge: number, currentPage: number) {
+    const queryParams = `?pagesize=${postPerPAge}&page=${currentPage}`;
+    this.http.get<{message: string, posts: any}>(`${this.url}/posts${queryParams}`)
+    .pipe(map((postData) => {
       return postData.posts.map(post => {
         return {
           title: post.title,
