@@ -26,8 +26,10 @@ export class AuthService {
       email,
       password
     };
-    this.http.post(`${this.url}/signup`, user).subscribe(res => {
-      console.log(res);
+    this.http.post(`${this.url}/signup`, user).subscribe( () => { 
+      this.router.navigate(['/']);
+    }, (err) => {
+      this.authStatusListener.next(false);
     });
   }
 
@@ -51,6 +53,8 @@ export class AuthService {
         this.router.navigate(['/']);
       }
 
+    }, (err) => {
+      this.authStatusListener.next(false);
     });
   }
 
